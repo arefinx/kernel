@@ -32,18 +32,12 @@ echo "          BUILDING KERNEL          "
 echo -e "***********************************************$nocol"
 make $KERNEL_DEFCONFIG O=out CC=clang
 make -j$(nproc --all) O=out \
-                              ARCH=arm64 \
                               LLVM=1 \
                               LLVM_IAS=1 \
-                              AR=llvm-ar \
-                              NM=llvm-nm \
-                              LD=ld.lld \
-                              OBJCOPY=llvm-objcopy \
-                              OBJDUMP=llvm-objdump \
-                              STRIP=llvm-strip \
-                              CC=clang \
-                              CROSS_COMPILE=aarch64-linux-gnu- \
-                              CROSS_COMPILE_ARM32=arm-linux-gnueabi-  2>&1 | tee error.log
+                              CC=$HOME/clang/bin/clang \
+                              CROSS_COMPILE=$CROSS_COMPILE \
+                              CROSS_COMPILE_COMPACT=$CROSS_COMPILE_ARM32 \
+                              CLANG_TRIPLE=aarch64-linux-gnu- 2>&1 | tee error.log
 export IMG="$MY_DIR"/out/arch/arm64/boot/Image.gz
 export dtbo="$MY_DIR"/out/arch/arm64/boot/dtbo.img
 export dtb="$MY_DIR"/out/arch/arm64/boot/dtb.img
